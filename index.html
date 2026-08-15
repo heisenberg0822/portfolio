@@ -30,7 +30,8 @@
     <!-- Header & Navigation -->
     <header class="fixed top-0 left-0 w-full bg-slate-900/80 backdrop-blur-md z-50 border-b border-slate-800/80 transition-all">
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="#home" class="text-xl font-extrabold tracking-wider font-godber bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">VELAVAN N</a>
+            <!-- Hidden Admin trigger on the title/logo click (Click 5 times quickly) -->
+            <a href="#home" id="secretAdminTrigger" class="text-xl font-extrabold tracking-wider font-godber bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent cursor-pointer select-none">VELAVAN N</a>
             <nav class="hidden md:flex space-x-6 text-sm font-medium items-center">
                 <a href="#about" class="text-slate-300 hover:text-cyan-400 transition-colors">About</a>
                 <a href="#skills" class="text-slate-300 hover:text-cyan-400 transition-colors">Skills</a>
@@ -258,7 +259,70 @@
         </div>
     </section>
 
+    <!-- Hidden Admin Login Modal Overlay -->
+    <div id="adminModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-2xl max-w-md w-full relative">
+            <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-extrabold font-godber text-slate-100">Admin <span class="text-cyan-400">Portal</span></h3>
+                <p class="text-slate-400 text-xs mt-1">Authorized access only.</p>
+            </div>
+            <form id="adminLoginForm" class="space-y-4">
+                <div>
+                    <input type="text" id="adminUser" required placeholder="Username" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:border-cyan-500 text-sm">
+                </div>
+                <div>
+                    <input type="password" id="adminPass" required placeholder="Password" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:border-cyan-500 text-sm">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 font-bold py-3 rounded-xl transition-all font-godber text-sm">Login</button>
+                <p id="loginErrorMsg" class="text-center text-xs font-medium text-rose-400 hidden"></p>
+            </form>
+        </div>
+    </div>
+
     <script>
+        // Secret Admin Trigger: Double-click or click 5 times rapidly on the top-left title logo "VELAVAN N"
+        let clickCount = 0;
+        let clickTimer = null;
+        
+        document.getElementById('secretAdminTrigger').addEventListener('click', function(e) {
+            e.preventDefault();
+            clickCount++;
+            
+            if (clickTimer) clearTimeout(clickTimer);
+            
+            if (clickCount === 5) {
+                clickCount = 0;
+                document.getElementById('adminModal').classList.remove('hidden');
+            } else {
+                clickTimer = setTimeout(() => {
+                    clickCount = 0;
+                }, 600);
+            }
+        });
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.add('hidden');
+            document.getElementById('adminLoginForm').reset();
+            document.getElementById('loginErrorMsg').classList.add('hidden');
+        }
+
+        // Admin Authentication Script
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = document.getElementById('adminUser').value;
+            const pass = document.getElementById('adminPass').value;
+            const errElement = document.getElementById('loginErrorMsg');
+
+            if (user === 'admin' && pass === '1234') {
+                window.location.href = 'admin.html';
+            } else {
+                errElement.classList.remove('hidden');
+                errElement.innerText = "Invalid credentials!";
+            }
+        });
+
+        // Form submission script
         document.getElementById('callRequestForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const name = document.getElementById('reqName').value;
@@ -275,7 +339,6 @@
             }
 
             try {
-                // Connected to live Render backend URL
                 const response = await fetch('https://portfolio-hj32.onrender.com/api/request-call', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
