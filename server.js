@@ -6,13 +6,14 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Local MongoDB URI for testing with Compass, falling back to cloud URI if deployed
+// MongoDB Atlas connection string configured via Render Environment Variables
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/portfolio';
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('MongoDB Connected Successfully'))
   .catch(err => console.log('MongoDB Connection Error:', err));
 
+// Schema for Help Desk Requests
 const callRequestSchema = new mongoose.Schema({
     name: { type: String, required: true },
     mobile: { type: String, required: true },
@@ -22,6 +23,12 @@ const callRequestSchema = new mongoose.Schema({
 
 const CallRequest = mongoose.model('CallRequest', callRequestSchema);
 
+// Base route to verify server status
+app.get('/', (req, res) => {
+    res.send('Portfolio Backend Server is Running');
+});
+
+// API endpoint to submit help desk request (POST)
 app.post('/api/request-call', async (req, res) => {
     try {
         const { name, mobile, comment } = req.body;
@@ -33,6 +40,7 @@ app.post('/api/request-call', async (req, res) => {
     }
 });
 
+// API endpoint to fetch requests for the admin dashboard (GET)
 app.get('/api/requests', async (req, res) => {
     try {
         const requests = await CallRequest.find().sort({ createdAt: -1 });
