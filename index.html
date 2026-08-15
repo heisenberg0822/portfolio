@@ -30,8 +30,7 @@
     <!-- Header & Navigation -->
     <header class="fixed top-0 left-0 w-full bg-slate-900/80 backdrop-blur-md z-50 border-b border-slate-800/80 transition-all">
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-            <!-- Secret Admin trigger on title logo (Click 5 times quickly) -->
-            <a href="#home" id="secretAdminTrigger" class="text-xl font-extrabold tracking-wider font-godber bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent cursor-pointer select-none">VELAVAN N</a>
+            <a href="#home" class="text-xl font-extrabold tracking-wider font-godber bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">VELAVAN N</a>
             <nav class="hidden md:flex space-x-6 text-sm font-medium items-center">
                 <a href="#about" class="text-slate-300 hover:text-cyan-400 transition-colors">About</a>
                 <a href="#skills" class="text-slate-300 hover:text-cyan-400 transition-colors">Skills</a>
@@ -259,70 +258,61 @@
         </div>
     </section>
 
-    <!-- Hidden Admin Login Modal Overlay -->
-    <div id="adminModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-2xl max-w-md w-full relative">
-            <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
-            <div class="text-center mb-6">
-                <h3 class="text-2xl font-extrabold font-godber text-slate-100">Admin <span class="text-cyan-400">Portal</span></h3>
-                <p class="text-slate-400 text-xs mt-1">Authorized access only.</p>
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-6 max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl font-extrabold mb-4 tracking-tight font-godber">Let's <span class="text-cyan-400">Connect</span></h2>
+        <p class="text-slate-400 mb-10 max-w-lg mx-auto">Available for freelance projects, collaborations, or professional opportunities. Reach out through any channel below.</p>
+        <div class="flex flex-wrap justify-center gap-6 text-sm md:text-base">
+            <a href="https://www.linkedin.com/in/mr-velavan-6594a6308/" target="_blank" class="bg-slate-900/60 hover:bg-slate-800/80 backdrop-blur-sm border border-slate-800 hover:border-cyan-500/40 px-6 py-4 rounded-2xl flex items-center gap-3 transition-all shadow-xl group">
+                <div class="w-10 h-10 rounded-xl bg-cyan-950 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform"><i class="fa-brands fa-linkedin-in"></i></div>
+                <span class="text-slate-200">LinkedIn Profile</span>
+            </a>
+            <a href="https://github.com/heisenberg0822" target="_blank" class="bg-slate-900/60 hover:bg-slate-800/80 backdrop-blur-sm border border-slate-800 hover:border-cyan-500/40 px-6 py-4 rounded-2xl flex items-center gap-3 transition-all shadow-xl group">
+                <div class="w-10 h-10 rounded-xl bg-cyan-950 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform"><i class="fa-brands fa-github"></i></div>
+                <span class="text-slate-200">GitHub Profile</span>
+            </a>
+            <a href="tel:6380480738" class="bg-slate-900/60 hover:bg-slate-800/80 backdrop-blur-sm border border-slate-800 hover:border-cyan-500/40 px-6 py-4 rounded-2xl flex items-center gap-3 transition-all shadow-xl group">
+                <div class="w-10 h-10 rounded-xl bg-cyan-950 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform"><i class="fa-solid fa-phone"></i></div>
+                <span class="text-slate-200">6380480738</span>
+            </a>
+            <a href="mailto:mrvelavan10@gmail.com" class="bg-slate-900/60 hover:bg-slate-800/80 backdrop-blur-sm border border-slate-800 hover:border-cyan-500/40 px-6 py-4 rounded-2xl flex items-center gap-3 transition-all shadow-xl group">
+                <div class="w-10 h-10 rounded-xl bg-cyan-950 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform"><i class="fa-solid fa-envelope"></i></div>
+                <span class="text-slate-200">mrvelavan10@gmail.com</span>
+            </a>
+        </div>
+        <div class="mt-10">
+            <a href="Velavan_N_Resume.docx" download class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-cyan-400 font-semibold px-6 py-3 rounded-xl transition-all shadow-md font-godber">
+                <i class="fa-solid fa-download"></i> Download Resume (DOCX)
+            </a>
+        </div>
+    </section>
+
+    <!-- Admin Login Section at the Bottom -->
+    <section id="adminlogin" class="py-16 px-6 max-w-md mx-auto">
+        <div class="bg-slate-900/50 backdrop-blur-sm p-6 rounded-2xl border border-slate-800/60 shadow-xl">
+            <div class="text-center mb-4">
+                <h3 class="text-xl font-bold font-godber text-slate-200">Admin <span class="text-cyan-400">Portal</span></h3>
             </div>
             <form id="adminLoginForm" class="space-y-4">
                 <div>
-                    <input type="text" id="adminUser" required placeholder="Username" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:border-cyan-500 text-sm">
+                    <input type="text" id="adminUser" required placeholder="Username" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-500 text-sm">
                 </div>
                 <div>
-                    <input type="password" id="adminPass" required placeholder="Password" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:border-cyan-500 text-sm">
+                    <input type="password" id="adminPass" required placeholder="Password" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-500 text-sm">
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 font-bold py-3 rounded-xl transition-all font-godber text-sm">Login</button>
+                <button type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 font-bold py-2.5 rounded-xl transition-all font-godber text-sm">Login</button>
                 <p id="loginErrorMsg" class="text-center text-xs font-medium text-rose-400 hidden"></p>
             </form>
         </div>
-    </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center text-slate-500 text-sm border-t border-slate-900 bg-black/40">
+        <p>&copy; 2026 Velavan N. All rights reserved.</p>
+    </footer>
 
     <script>
-        // Secret Admin Trigger: Click 5 times rapidly on the top-left title logo "VELAVAN N"
-        let clickCount = 0;
-        let clickTimer = null;
-        
-        document.getElementById('secretAdminTrigger').addEventListener('click', function(e) {
-            e.preventDefault();
-            clickCount++;
-            
-            if (clickTimer) clearTimeout(clickTimer);
-            
-            if (clickCount === 5) {
-                clickCount = 0;
-                document.getElementById('adminModal').classList.remove('hidden');
-            } else {
-                clickTimer = setTimeout(() => {
-                    clickCount = 0;
-                }, 600);
-            }
-        });
-
-        function closeAdminModal() {
-            document.getElementById('adminModal').classList.add('hidden');
-            document.getElementById('adminLoginForm').reset();
-            document.getElementById('loginErrorMsg').classList.add('hidden');
-        }
-
-        // Admin Authentication Script
-        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const user = document.getElementById('adminUser').value;
-            const pass = document.getElementById('adminPass').value;
-            const errElement = document.getElementById('loginErrorMsg');
-
-            if (user === 'admin' && pass === '1234') {
-                window.location.href = 'admin.html';
-            } else {
-                errElement.classList.remove('hidden');
-                errElement.innerText = "Invalid credentials!";
-            }
-        });
-
-        // Form submission script
+        // Form submission script for Request a Call
         document.getElementById('callRequestForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const name = document.getElementById('reqName').value;
@@ -362,41 +352,21 @@
                 msgElement.innerText = "Could not connect to the server.";
             }
         });
+
+        // Admin Authentication Script
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = document.getElementById('adminUser').value;
+            const pass = document.getElementById('adminPass').value;
+            const errElement = document.getElementById('loginErrorMsg');
+
+            if (user === 'admin' && pass === '1234') {
+                window.location.href = 'admin.html';
+            } else {
+                errElement.classList.remove('hidden');
+                errElement.innerText = "Invalid credentials!";
+            }
+        });
     </script>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-24 px-6 max-w-4xl mx-auto text-center">
-        <h2 class="text-3xl font-extrabold mb-4 tracking-tight font-godber">Let's <span class="text-cyan-400">Connect</span></h2>
-        <p class="text-slate-400 mb-10 max-w-lg mx-auto">Available for freelance projects, collaborations, or professional opportunities. Reach out through any channel below.</p>
-        <div class="flex flex-wrap justify-center gap-6 text-sm md:text-base">
-            <a href="https://www.linkedin.com/in/mr-velavan-6594a6308/" target="_blank" class="bg-slate-900/60 hover:bg-slate-800/80 backdrop-blur-sm border border-slate-800 hover:border-cyan-500/40 px-6 py-4 rounded-2xl flex items-center gap-3 transition-all shadow-xl group">
-                <div class="w-10 h-10 rounded-xl bg-cyan-950 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform"><i class="fa-brands fa-linkedin-in"></i></div>
-                <span class="text-slate-200">LinkedIn Profile</span>
-            </a>
-            <a href="https://github.com/heisenberg0822" target="_blank" class="bg-slate-900/60 hover:bg-slate-800/80 backdrop-blur-sm border border-slate-800 hover:border-cyan-500/40 px-6 py-4 rounded-2xl flex items-center gap-3 transition-all shadow-xl group">
-                <div class="w-10 h-10 rounded-xl bg-cyan-950 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform"><i class="fa-brands fa-github"></i></div>
-                <span class="text-slate-200">GitHub Profile</span>
-            </a>
-            <a href="tel:6380480738" class="bg-slate-900/60 hover:bg-slate-800/80 backdrop-blur-sm border border-slate-800 hover:border-cyan-500/40 px-6 py-4 rounded-2xl flex items-center gap-3 transition-all shadow-xl group">
-                <div class="w-10 h-10 rounded-xl bg-cyan-950 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform"><i class="fa-solid fa-phone"></i></div>
-                <span class="text-slate-200">6380480738</span>
-            </a>
-            <a href="mailto:mrvelavan10@gmail.com" class="bg-slate-900/60 hover:bg-slate-800/80 backdrop-blur-sm border border-slate-800 hover:border-cyan-500/40 px-6 py-4 rounded-2xl flex items-center gap-3 transition-all shadow-xl group">
-                <div class="w-10 h-10 rounded-xl bg-cyan-950 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform"><i class="fa-solid fa-envelope"></i></div>
-                <span class="text-slate-200">mrvelavan10@gmail.com</span>
-            </a>
-        </div>
-        <div class="mt-10">
-            <a href="Velavan_N_Resume.docx" download class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-cyan-400 font-semibold px-6 py-3 rounded-xl transition-all shadow-md font-godber">
-                <i class="fa-solid fa-download"></i> Download Resume (DOCX)
-            </a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-8 text-center text-slate-500 text-sm border-t border-slate-900 bg-black/40">
-        <p>&copy; 2026 Velavan N. All rights reserved.</p>
-    </footer>
-
 </body>
 </html>
