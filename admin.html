@@ -7,6 +7,8 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SheetJS for Excel Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -51,7 +53,10 @@
                 <p class="text-slate-400 text-sm mt-1">Live inquiries submitted through your portfolio's request call form.</p>
             </div>
 
-            <div class="flex items-center gap-3">
+            <div class="flex flex-wrap items-center gap-3">
+                <button onclick="exportToExcel()" class="bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 font-semibold px-4 py-2.5 rounded-xl text-sm transition-all flex items-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-file-excel"></i> Export to Excel
+                </button>
                 <button onclick="fetchRequests()" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-cyan-400 font-semibold px-4 py-2.5 rounded-xl text-sm transition-all flex items-center gap-2 shadow-sm">
                     <i class="fa-solid fa-arrows-rotate"></i> Refresh Data
                 </button>
@@ -90,7 +95,7 @@
                             <th class="py-4 px-6">Client Name</th>
                             <th class="py-4 px-6">Mobile Number</th>
                             <th class="py-4 px-6">Message / Query</th>
-                            <th class="py-4 px-6 text-center">Action</th>
+                            <th class="py-4 px-6 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="requestsTableBody" class="divide-y divide-slate-800/60 text-slate-300">
@@ -112,7 +117,7 @@
         <p>&copy; 2026 Velavan N. All rights reserved.</p>
     </footer>
 
-    <!-- Script to Fetch and Display Requests -->
+    <!-- Script to Fetch, Filter, Export, and Delete Requests -->
     <script>
         let allRequests = [];
 
@@ -130,12 +135,8 @@
             `;
 
             try {
-                // Fetch directly from live Render backend
                 const response = await fetch('https://portfolio-hj32.onrender.com/api/requests');
-                
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
+                if (!response.ok) throw new Error('Network response was not ok');
 
                 allRequests = await response.json();
                 countDisplay.innerText = allRequests.length;
@@ -184,14 +185,62 @@
                             </a>
                         </td>
                         <td class="py-4 px-6 max-w-md break-words text-slate-300 leading-relaxed">${escapeHTML(req.comment)}</td>
-                        <td class="py-4 px-6 text-center whitespace-nowrap">
-                            <a href="tel:${escapeHTML(req.mobile)}" class="bg-cyan-950 hover:bg-cyan-900 border border-cyan-800/60 text-cyan-300 text-xs px-3 py-1.5 rounded-lg transition-all inline-flex items-center gap-1.5 font-medium">
+                        <td class="py-4 px-6 text-center whitespace-nowrap space-x-2">
+                            <a href="tel:${escapeHTML(req.mobile)}" class="bg-cyan-950 hover:bg-cyan-900 border border-cyan-800/60 text-cyan-300 text-xs px-3 py-1.5 rounded-lg transition-all inline-flex items-center gap-1 font-medium">
                                 <i class="fa-solid fa-phone-volume"></i> Call
                             </a>
+                            <button onclick="deleteRequest('${req._id}')" class="bg-rose-950/60 hover:bg-rose-900 border border-rose-800/60 text-rose-300 text-xs px-3 py-1.5 rounded-lg transition-all inline-flex items-center gap-1 font-medium">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </button>
                         </td>
                     </tr>
                 `;
             }).join('');
+        }
+
+        async function deleteRequest(id) {
+            if (!confirm('Are you sure you want to delete this request?')) return;
+
+            try {
+                const response = await fetch(`https://portfolio-hj32.onrender.com/api/requests/${id}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    // Remove from local array and re-render
+                    allRequests = allRequests.filter(req => req._id !== id);
+                    document.getElementById('totalRequestsCount').innerText = allRequests.length;
+                    filterRequests();
+                } else {
+                    alert('Failed to delete request.');
+                }
+            } catch (error) {
+                alert('Error connecting to server.');
+            }
+        }
+
+        function exportToExcel() {
+            if (allRequests.length === 0) {
+                alert('No data available to export.');
+                return;
+            }
+
+            // Map data for clean excel formatting
+            const excelData = allRequests.map((req, index) => ({
+                'S.No': index + 1,
+                'Date & Time': req.createdAt ? new Date(req.createdAt).toLocaleString('en-IN') : 'N/A',
+                'Client Name': req.name,
+                'Mobile Number': req.mobile,
+                'Message / Query': req.comment
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(excelData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Call Requests");
+
+            // Trigger file download
+            XLSX.writeFile(workbook, "Velavan_Portfolio_Inquiries.xlsx");
         }
 
         function filterRequests() {
@@ -218,7 +267,6 @@
             window.location.href = 'index.html';
         }
 
-        // Fetch requests on page load
         document.addEventListener('DOMContentLoaded', fetchRequests);
     </script>
 </body>

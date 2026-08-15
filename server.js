@@ -52,3 +52,14 @@ app.get('/api/requests', async (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// Delete a call request by ID
+app.delete('/api/requests/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await CallRequest.findByIdAndDelete(id);
+        res.json({ success: true, message: 'Request deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
